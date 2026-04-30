@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>AI应用开发实践指南 | 从创意到轻量化解决方案</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;  /* 普通白色背景 */
+            color: #1f2937;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* 卡片风格：白色背景，轻微边框和阴影 */
+        .slide {
+            max-width: 1280px;
+            margin: 2rem auto;
+            background: #ffffff;
+            border-radius: 1.5rem;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.2s;
+            padding: 2.5rem 2rem;
+        }
+
+        .slide:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border-color: #d1d5db;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: #111827;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            border-left: 6px solid #3b82f6;
+            padding-left: 1.2rem;
+            margin-bottom: 1.8rem;
+            color: #111827;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 1rem 0 0.8rem 0;
+            color: #1e40af;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .example-card {
+            background: #f9fafb;
+            border-radius: 1rem;
+            padding: 1.2rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .code-block {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            color: #1f2937;
+            margin: 0.8rem 0;
+            border: 1px solid #e5e7eb;
+        }
+
+        button, .btn-demo {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            color: #1f2937;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background: #e5e7eb;
+            border-color: #9ca3af;
+        }
+
+        .path-diagram, .pyramid, .loop-chart {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .step {
+            background: #f3f4f6;
+            border-radius: 2rem;
+            padding: 0.7rem 1.2rem;
+            font-weight: 600;
+            color: #111827;
+            border: 1px solid #e5e7eb;
+        }
+
+        .arrow {
+            font-size: 1.8rem;
+            color: #6b7280;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* 看板样式 - 浅色 */
+        .kanban-board {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .kanban-col {
+            flex: 1;
+            background: #f9fafb;
+            border-radius: 1rem;
+            padding: 1rem;
+            min-width: 200px;
+            border: 1px solid #e5e7eb;
+        }
+        .col-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #3b82f6;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+        .card-list {
+            min-height: 200px;
+        }
+        .kanban-card {
+            background: #ffffff;
+            margin: 0.6rem 0;
+            padding: 0.6rem 1rem;
+            border-radius: 0.75rem;
+            cursor: grab;
+            transition: 0.1s;
+            border-left: 4px solid #3b82f6;
+            font-size: 0.9rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+        .kanban-card:active { cursor: grabbing; }
+
+        .highlight {
+            background: #eff6ff;
+            padding: 1rem;
+            border-radius: 1rem;
+            border-left: 4px solid #3b82f6;
+            color: #1e3a8a;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        @media (max-width: 800px) {
+            .slide { padding: 1.5rem; margin: 1rem; }
+            h1 { font-size: 2rem; }
+            .grid-2col { grid-template-columns: 1fr; }
+        }
+
+        .mock-link {
+            background: #f3f4f6;
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+
+        .concept-card {
+            background: #f9fafb;
+            border-radius: 1rem;
+            padding: 1rem;
+            flex: 1;
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 胶片 1: 封面页 -->
+<section class="slide" id="slide1">
+    <div style="text-align: center; padding: 2rem 0;">
+        <i class="fas fa-magic" style="font-size: 3.5rem; color: #3b82f6;"></i>
+        <h1 style="margin: 1rem 0 0.5rem;">从创意到轻量化解决方案：<br>AI应用开发实践指南</h1>
+        <p style="font-size: 1.2rem; color: #4b5563;">掌握核心四步，高效兑现想法</p>
+        <div style="margin-top: 2rem;"><i class="fas fa-arrow-right"></i> <i class="fas fa-code"></i> <i class="fas fa-globe"></i></div>
+    </div>
+</section>
+
+<!-- 胶片 2: 目录 -->
+<section class="slide" id="slide2">
+    <h2><i class="fas fa-road"></i> 从想法到链接的完整路径</h2>
+    <div class="path-diagram">
+        <div class="step"><i class="fas fa-key"></i> 第一步：如何构建有效的提示词</div>
+        <span class="arrow">→</span>
+        <div class="step"><i class="fas fa-sync-alt"></i> 第二步：迭代优化</div>
+        <span class="arrow">→</span>
+        <div class="step"><i class="fas fa-share-alt"></i> 第三步：一键交付</div>
+        <span class="arrow">→</span>
+        <div class="step"><i class="fas fa-chart-line"></i> 第四步：价值呈现</div>
+    </div>
+    <div style="text-align: center; margin-top: 1rem;">✦ 高效兑现，让每个想法发光 ✦</div>
+</section>
+
+<!-- 胶片 3: 第一步概述 -->
+<section class="slide">
+    <h2><i class="fas fa-feather-alt"></i> 第一步：如何构建有效的提示词</h2>
+    <p style="font-size: 1.2rem; color: #4b5563;">提示词是您与AI协作的“蓝图”，质量决定产出。接下来我们将深入三大核心原则：清晰、结构、结果导向。</p>
+    <div style="display: flex; justify-content: center; margin: 1.5rem 0;"><i class="fas fa-magic fa-3x" style="color:#f59e0b;"></i> <i class="fas fa-drafting-compass fa-3x" style="margin-left: 1rem; color:#3b82f6;"></i></div>
+</section>
+
+<!-- 胶片 4: 原则一：清晰 -->
+<section class="slide">
+    <h2><i class="fas fa-eye"></i> 清晰：消除一切歧义</h2>
+    <div class="grid-2col">
+        <div class="example-card">
+            <h3>❌ 错误示例</h3>
+            <div class="code-block">“做一个好看的按钮”</div>
+            <div style="margin-top: 1rem;"><button style="background:#e5e7eb; border:1px solid #d1d5db;">默认样式按钮</button></div>
+            <p style="font-size:0.9rem; margin-top:0.5rem; color:#6b7280;">模糊 → 结果随机，风格不可控</p>
+        </div>
+        <div class="example-card">
+            <h3>✅ 正确示例</h3>
+            <div class="code-block">“生成一个蓝色的、圆角矩形、带有‘立即创建’文字、符合Material Design风格的按钮SVG代码”</div>
+            <div style="margin-top:1rem;">
+                <svg width="140" height="48" viewBox="0 0 140 48" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0" y="0" width="140" height="48" rx="24" fill="#1976D2" stroke="none" />
+                    <text x="70" y="30" font-family="Arial" font-size="16" fill="white" text-anchor="middle" font-weight="bold">立即创建</text>
+                </svg>
+            </div>
+            <p style="font-size:0.9rem; color:#6b7280;">具体化：颜色/形状/文字/风格 → 精准符合预期</p>
+        </div>
+    </div>
+    <div class="highlight"><i class="fas fa-lightbulb"></i> 核心技巧：具体化（数字/风格/边界），明确“要什么 & 不要什么”</div>
+</section>
+
+<!-- 胶片 5: 原则二：结构化表达 -->
+<section class="slide">
+    <h2><i class="fas fa-layer-group"></i> 结构：为AI铺设思维轨道</h2>
+    <div style="background:#f3f4f6; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem; border:1px solid #e5e7eb;">
+        <p><strong>背景/目标：</strong>为小型团队创建一个简单的每周任务协作看板。<br>
+        <strong>角色：</strong>资深前端开发工程师。<br>
+        <strong>任务：</strong>单页应用，包含“待处理”“进行中”“已完成”三列，支持拖拽卡片，数据本地存储。<br>
+        <strong>格式：</strong>输出完整的HTML、CSS、JavaScript代码在一个文件内。</p>
+    </div>
+    <div id="taskBoardContainer" class="kanban-board"></div>
+    <p class="mock-link" style="margin-top: 1rem;"><i class="fas fa-check-circle"></i> 实时拖拽 + LocalStorage 持久化 —— 完全遵循结构化提示词生成的看板实例</p>
+    <div class="highlight" style="margin-top: 1rem;"><i class="fas fa-cogs"></i> 结构模板：背景+角色+任务+要求+格式，让AI精准理解复杂需求</div>
+</section>
+
+<!-- 胶片 6: 原则三：结果导向 -->
+<section class="slide">
+    <h2><i class="fas fa-brain"></i> 结果导向：在“说”之前，先“想”清楚</h2>
+    <div class="flex-between" style="gap: 1rem; flex-wrap: wrap;">
+        <div class="concept-card">
+            <i class="fas fa-list-check"></i> <strong>构思清单 (动笔前自问)</strong>
+            <ul style="margin-top: 1rem; list-style: none; color:#4b5563;">
+                <li>🎯 核心目标：这个工具要解决什么具体问题？</li>
+                <li>⚙️ 底层逻辑：工作原理/流程是什么？（输入→处理→输出）</li>
+                <li>💎 用户价值：能帮助用户多快好省地完成什么事？</li>
+                <li>📱 界面与交互：主要功能模块如何布局？操作路径？</li>
+            </ul>
+        </div>
+        <div class="concept-card">
+            <i class="fas fa-chalkboard-user"></i> <strong>示例：任务协作看板</strong>
+            <ul style="margin-top: 1rem; list-style: none; color:#4b5563;">
+                <li>✓ 目标：团队任务可视化管理</li>
+                <li>✓ 逻辑：拖拽改变状态，本地存储</li>
+                <li>✓ 价值：无需后端，开箱即用</li>
+                <li>✓ 界面：三列看板，卡片拖拽</li>
+            </ul>
+            <p class="mock-link" style="margin-top: 0.8rem;"><i class="fas-regular fa-eye"></i> 上方看板即依据此构思生成</p>
+        </div>
+    </div>
+    <div class="highlight" style="margin-top: 1rem;">✨ 先构思，后编写 → 避免反复推翻，效率提升300%</div>
+</section>
+
+<!-- 胶片 7+8: 第二部分：迭代优化 -->
+<section class="slide">
+    <h2><i class="fas fa-chart-line"></i> 第二步：从“能用”到“好用”</h2>
+    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+        <div style="flex:1; background:#f9fafb; border-radius: 1rem; padding: 1rem; border:1px solid #e5e7eb;">
+            <i class="fas fa-code-branch"></i> <strong>V1 提示词 (简陋)</strong>
+            <div class="code-block">“生成一个任务看板网页”</div>
+            <div>→ 结果：基础样式，无拖拽，无数据持久化</div>
+        </div>
+        <div style="flex:1; background:#f9fafb; border-radius: 1rem; padding: 1rem; border:1px solid #e5e7eb;">
+            <i class="fas fa-star-of-life"></i> <strong>V2 进阶提示词</strong>
+            <div class="code-block">“基于结构化提示词，生成美观的团队协作看板，支持拖拽任务卡片，本地存储，现代玻璃风格，三列布局。” </div>
+            <div>→ 本页上方即为最终V2成品 ✨ 拖拽 + 存储 + 清晰界面</div>
+        </div>
+    </div>
+    <div style="margin-top: 1.5rem; text-align: center;"><i class="fas fa-arrow-up"></i> 螺旋上升迭代，完美主义交付 <i class="fas fa-arrow-up"></i></div>
+</section>
+
+<!-- 胶片 9+10: 第三部分 一键交付 SOP -->
+<section class="slide">
+    <h2><i class="fas fa-cloud-upload-alt"></i> 第三步：茶壶煮饺子，怎么倒出来？</h2>
+    <div class="flex-between" style="gap: 2rem; flex-wrap: wrap;">
+        <div><i class="fas fa-folder-open fa-3x" style="color:#3b82f6;"></i> 本地代码 <i class="fas fa-question-circle fa-2x" style="color:#9ca3af;"></i> <i class="fas fa-globe fa-3x" style="color:#3b82f6;"></i></div>
+        <div class="mock-link">问题：代码在电脑里，价值为零 → 发布链接才是价值起点</div>
+    </div>
+    <div class="path-diagram">
+        <div class="step">1️⃣ 准备文件夹<br><small>(HTML/CSS/JS文件)</small></div>
+        <i class="fas fa-arrow-right"></i>
+        <div class="step">2️⃣ 选择部署平台<br><small>(如静态托管服务)</small></div>
+        <i class="fas fa-arrow-right"></i>
+        <div class="step">3️⃣ 获得链接<br><small>可分享的公开网址</small></div>
+    </div>
+    <div class="highlight"><i class="fas fa-cloud-upload-alt"></i> 核心优势：免费快速、无需服务器配置，拖拽即部署，全球可访问</div>
+</section>
+
+<!-- 胶片 11+12: 第四部分 价值呈现 三层递进 -->
+<section class="slide">
+    <h2><i class="fas fa-chart-simple"></i> 第四部分：完成闭环——呈现你的价值</h2>
+    <div class="pyramid" style="flex-direction: column; align-items: center;">
+        <div style="background:#dbeafe; width: 90%; text-align: center; padding: 1rem; border-radius: 1rem; border:1px solid #bfdbfe; color:#1e3a8a;">✨ 可感知 (有影响) ✨<br>“从构思到发布全流程5分钟，效率提升20倍”</div>
+        <div style="background:#e0e7ff; width: 80%; margin: 0.5rem; text-align: center; padding: 1rem; border-radius: 1rem; border:1px solid #c7d2fe; color:#1e3a8a;">📌 可用 (可操作)<br>稳定线上工具，解决具体问题（协作看板）</div>
+        <div style="background:#eef2ff; width: 70%; text-align: center; padding: 1rem; border-radius: 1rem; border:1px solid #e0e7ff; color:#1e3a8a;">🔗 可见 (可访问链接)<br>一键分享，无需安装</div>
+    </div>
+    <div class="flex-between" style="margin-top: 1.5rem;">
+        <div><i class="fas fa-check-circle" style="color:#10b981;"></i> 协作看板实时可拖拽存储，线上可验证</div>
+        <div><i class="fas fa-check-circle" style="color:#10b981;"></i> 遵循SOP，从本地到链接只需三步</div>
+    </div>
+</section>
+
+<!-- 胶片 13: 回顾总结 四步闭环 -->
+<section class="slide">
+    <h2><i class="fas fa-sync-alt"></i> 核心心法：从想法到产品的四步闭环</h2>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.2rem; margin: 1.8rem 0;">
+        <div class="step">✍️ 会构思</div>
+        <i class="fas fa-arrow-right"></i>
+        <div class="step">📢 会表达 (清晰+结构+结果导向)</div>
+        <i class="fas fa-arrow-right"></i>
+        <div class="step">🚀 会交付</div>
+        <i class="fas fa-arrow-right"></i>
+        <div class="step">📊 会呈现</div>
+    </div>
+    <div style="text-align: center;"><i class="fas fa-redo-alt fa-2x" style="color:#3b82f6;"></i> 循环精进，无限迭代 <i class="fas fa-redo-alt fa-2x" style="color:#3b82f6;"></i></div>
+    <p style="margin-top: 1rem; color:#4b5563;">通过“构思-有效表达(清晰/结构化/结果导向)-交付-呈现”，让每一个创意都抵达用户手中。</p>
+</section>
+
+<footer>从创意到轻量化解决方案 —— 掌握核心四步，让AI兑现无限想法</footer>
+
+<script>
+    // 协作看板（拖拽 + LocalStorage）基于结构化提示词的完整实现
+    const boardDataKey = 'teamKanbanData';
+    let kanbanData = {
+        todo: { title: '📋 待处理', cards: ['设计系统架构', '收集用户需求'] },
+        inprogress: { title: '⚙️ 进行中', cards: ['AI提示词优化', '开发看板组件'] },
+        done: { title: '✅ 已完成', cards: ['初始化项目', '研究部署方案'] }
+    };
+
+    function saveBoardData() {
+        localStorage.setItem(boardDataKey, JSON.stringify(kanbanData));
+    }
+
+    function loadBoardData() {
+        const stored = localStorage.getItem(boardDataKey);
+        if(stored) {
+            try{
+                kanbanData = JSON.parse(stored);
+            }catch(e){}
+        }
+    }
+
+    let dragSource = { colId: null, cardIndex: null };
+
+    function renderBoard() {
+        const container = document.getElementById('taskBoardContainer');
+        if(!container) return;
+        container.innerHTML = '';
+        const colIds = ['todo', 'inprogress', 'done'];
+        colIds.forEach(colId => {
+            const col = kanbanData[colId];
+            const colDiv = document.createElement('div');
+            colDiv.className = 'kanban-col';
+            colDiv.setAttribute('data-col-id', colId);
+            colDiv.innerHTML = `<div class="col-title">${col.title}</div><div class="card-list" id="cardList-${colId}"></div>`;
+            container.appendChild(colDiv);
+            const cardListDiv = colDiv.querySelector('.card-list');
+            col.cards.forEach((cardText, idx) => {
+                const card = document.createElement('div');
+                card.className = 'kanban-card';
+                card.setAttribute('draggable', 'true');
+                card.setAttribute('data-col', colId);
+                card.setAttribute('data-index', idx);
+                card.innerText = cardText;
+                card.addEventListener('dragstart', handleDragStart);
+                card.addEventListener('dragend', handleDragEnd);
+                cardListDiv.appendChild(card);
+            });
+            colDiv.addEventListener('dragover', (e) => { e.preventDefault(); });
+            colDiv.addEventListener('drop', handleDropOnCol);
+        });
+    }
+
+    function handleDragStart(e) {
+        const card = e.target.closest('.kanban-card');
+        if(!card) return;
+        const colId = card.getAttribute('data-col');
+        const idx = parseInt(card.getAttribute('data-index'));
+        dragSource.colId = colId;
+        dragSource.cardIndex = idx;
+        e.dataTransfer.setData('text/plain', `${colId},${idx}`);
+        e.dataTransfer.effectAllowed = 'move';
+    }
+    function handleDragEnd(e) {
+        dragSource = { colId: null, cardIndex: null };
+    }
+
+    function handleDropOnCol(e) {
+        e.preventDefault();
+        const targetCol = e.currentTarget.getAttribute('data-col-id');
+        if(!targetCol || !dragSource.colId) return;
+        if(targetCol === dragSource.colId) return;
+
+        const sourceCol = dragSource.colId;
+        const sourceIdx = dragSource.cardIndex;
+        const cardText = kanbanData[sourceCol].cards[sourceIdx];
+        if(!cardText) return;
+        kanbanData[sourceCol].cards.splice(sourceIdx, 1);
+        kanbanData[targetCol].cards.push(cardText);
+        saveBoardData();
+        renderBoard();
+    }
+
+    loadBoardData();
+    renderBoard();
+
+    // 额外样式微调（仅保留白色主题所需）
+    const style = document.createElement('style');
+    style.textContent = `
+        .kanban-card:hover { transform: scale(1.01); background:#fef9e3; }
+        button { cursor: pointer; }
+    `;
+    document.head.appendChild(style);
+</script>
+</body>
+</html>
